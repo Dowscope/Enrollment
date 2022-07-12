@@ -9,14 +9,20 @@ const options = {
     password: db_key,
 }
 
-firebird.attach(options, (err, db) => {
-    if (err) throw err
-    
-    db.query(qry_CREATE_SCHOOL_TABLE, (err, db) => {
+function runQuery(qry) {
+    firebird.attach(options, (err, db) => {
         if (err) throw err
-        console.log('Query Sucessful')
-        db.detach
+        
+        db.query(qry, (err, db) => {
+            if (err) throw err
+            console.log('Query Sucessful')
+            db.detach()
+        })
     })
-})
+}
 
-const qry_CREATE_SCHOOL_TABLE = 'CREATE TABLE schools (school_bsid int, school_name varchar(255));'
+function addSchool(bsid, name) {
+    const qry_INSERT_SCHOOL = "INSERT INTO schools (school_bsid, school_name) VALUES (\'509566\', \'Sherbrooke P.S.\');"
+}
+
+const qry_CREATE_SCHOOL_TABLE = 'CREATE TABLE schools (school_bsid int NOT NULL, school_name varchar(255) NOT NULL, PRIMARY KEY (school_bsid));'
