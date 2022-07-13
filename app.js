@@ -4,25 +4,38 @@ const { db_ip, db_port, db_name, db_user, db_key } = require('./config')
 
 const options = {
     host: db_ip,
+    port: db_port,
     database: db_name,
     user: db_user,
     password: db_key,
 }
 
-function runQuery(qry) {
-    firebird.attach(options, (err, db) => {
+async function runQuery(qry) {
+    var results = []
+    await firebird.attach(options, (err, db) => {
         if (err) throw err
-        
-        db.query(qry, (err, db) => {
+        db.query(qry, (err, result) => {
             if (err) throw err
-            console.log('Query Sucessful')
+            this.results = result
             db.detach()
         })
     })
+    return results
 }
 
 function addSchool(bsid, name) {
-    const qry_INSERT_SCHOOL = "INSERT INTO schools (school_bsid, school_name) VALUES (\'509566\', \'Sherbrooke P.S.\');"
+    const qry = "INSERT INTO schools (school_bsid, school_name) VALUES (\'509566\', \'Sherbrooke P.S.\')"
 }
 
-const qry_CREATE_SCHOOL_TABLE = 'CREATE TABLE schools (school_bsid int NOT NULL, school_name varchar(255) NOT NULL, PRIMARY KEY (school_bsid));'
+function listSchools() {
+    const qry = "SELECT * FROM schools"
+    runQuery(qry).then(function(result){
+        console.log(result)
+    })
+    // for (r of results) {
+    //     //console.log('BSID: ' + r.school_bsid + ' - Name: ' + r.school_name)
+    // }
+}
+
+
+listSchools()
