@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Dowscope/Enrollment#readme",
   "dependencies": {
-    "dotenv": "^16.0.1"
+    "dotenv": "^16.0.1",
+    "node-firebird": "^1.0.0"
   }
 }

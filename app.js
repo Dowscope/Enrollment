@@ -10,32 +10,14 @@ const options = {
     password: db_key,
 }
 
-async function runQuery(qry) {
-    var results = []
-    await firebird.attach(options, (err, db) => {
+var qry = "CREATE TABLE Users (UserID int,username varchar(255),password varchar(255));"
+qry = "INSERT INTO Users (UserID, username, password) VALUES ('1', 'tdowling', 'test');"
+
+firebird.attach(options, (err, db) => {
+    if (err) throw err
+    db.query(qry, (err, result) => {
         if (err) throw err
-        db.query(qry, (err, result) => {
-            if (err) throw err
-            this.results = result
-            db.detach()
-        })
-    })
-    return results
-}
-
-function addSchool(bsid, name) {
-    const qry = "INSERT INTO schools (school_bsid, school_name) VALUES (\'509566\', \'Sherbrooke P.S.\')"
-}
-
-function listSchools() {
-    const qry = "SELECT * FROM schools"
-    runQuery(qry).then(function(result){
         console.log(result)
+        db.detach()
     })
-    // for (r of results) {
-    //     //console.log('BSID: ' + r.school_bsid + ' - Name: ' + r.school_name)
-    // }
-}
-
-
-listSchools()
+});
